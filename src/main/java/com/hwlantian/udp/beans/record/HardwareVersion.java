@@ -1,4 +1,4 @@
-package com.bluesky.hanvon.udp;
+package com.hwlantian.udp.beans.record;
 
 import lombok.Data;
 

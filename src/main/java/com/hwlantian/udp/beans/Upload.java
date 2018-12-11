@@ -1,5 +1,9 @@
-package com.bluesky.hanvon.udp;
+package com.hwlantian.udp.beans;
 
+import com.hwlantian.udp.beans.record.HardwareVersion;
+import com.hwlantian.udp.beans.record.Record;
+import com.hwlantian.udp.beans.tbsd.Command;
+import com.hwlantian.udp.beans.tbsd.Requests;
 import lombok.Data;
 
 import java.util.List;

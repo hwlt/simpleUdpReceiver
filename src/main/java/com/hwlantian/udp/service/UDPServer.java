@@ -1,4 +1,4 @@
-package com.bluesky.hanvon.udp;
+package com.hwlantian.udp.service;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -6,15 +6,20 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Administrator on 2017/9/9.
  */
 @Slf4j
-@RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UDPServer {
-    private static final Integer port = 59999;
+    @Setter
+    private Integer port = 59999;
     private final ChannelInboundHandler messageHandler;
     private ChannelFuture channelFuture;
     public void start() {

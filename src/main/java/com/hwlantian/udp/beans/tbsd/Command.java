@@ -1,6 +1,5 @@
 package com.hwlantian.udp.beans.tbsd;
 
-import com.hwlantian.udp.beans.PackageKey;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +12,6 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class Command extends TBSD<Map<String,Object>> {
 
-    @PackageKey(value = 0,ignore = true)
     public static final Integer MAXLINE = 0xFFFF;
     public static Integer circleLine(Integer line) {
         return line % (MAXLINE + 1);
@@ -28,7 +26,6 @@ public class Command extends TBSD<Map<String,Object>> {
             return c;
         }
     }
-    @PackageKey(1)
     Integer line;
 
 }

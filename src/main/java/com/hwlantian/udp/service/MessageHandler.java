@@ -50,11 +50,11 @@ public class MessageHandler extends SimpleChannelInboundHandler<DatagramPacket> 
                 // save data to db or cache, or send internal message to other service for that.
                 // and need to get Return for that record to tell device that the data has been received.
                 // if device request data from server, or send command to server. or server has some command need to send
-                // to device. add them to the Return. beware that the server-to-device command can be sent later. so may need to
+                // to device. add them to the Return. Beware that the server-to-device command can be sent later. so may need to
                 // cache the ip address and the port if you need that feature.
 
-                // now I just use DemoDatabase for data store stuff. beware that the upload may be very frequency if got
-                // too many devices. so better use message rather than save it right now.
+                // now I just use DemoDatabase for data store stuff. Beware that the upload may be very frequency if got
+                // too many devices. So better use message rather than save it right now.
                 Return aReturn = database.save(record);
                 downloadWarp.getContents().add(Download.fromReturn(aReturn));
             }

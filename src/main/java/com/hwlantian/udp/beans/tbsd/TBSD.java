@@ -1,7 +1,6 @@
 package com.hwlantian.udp.beans.tbsd;
 
 import com.fasterxml.jackson.annotation.*;
-import com.hwlantian.udp.beans.PackageKey;
 import com.hwlantian.udp.service.TimeUtil;
 import lombok.Data;
 
@@ -19,21 +18,17 @@ public class TBSD <T> {
         return timestamp != null ? timestamp : 0L;
     }
     @JsonView(BaseView.class)
-    @PackageKey(3)
     protected String by;
 
 
     @JsonView(BaseView.class)
-    @PackageKey(0x10)
     protected T data;
 
 
     @JsonIgnore
-    @PackageKey(value = 4,ignore = true)
     protected Long timestamp;
 
     @JsonSetter
-    @PackageKey(2)
     public void setDelayed(Long delayed){
         if (delayed == null) {
             timestamp = null;
@@ -43,7 +38,6 @@ public class TBSD <T> {
     }
     @JsonGetter
     @JsonView(BaseView.class)
-    @PackageKey(2)
     public Long getDelayed(){
         if (timestamp == null) {
             return null;

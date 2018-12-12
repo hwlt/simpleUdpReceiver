@@ -14,8 +14,6 @@ import java.util.Map;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Record {
-//    @Id
-//    private String id;
     private String ip;
     private String deviceId;
     private Long timestamp;

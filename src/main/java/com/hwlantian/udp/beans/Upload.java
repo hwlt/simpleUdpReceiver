@@ -1,11 +1,14 @@
 package com.hwlantian.udp.beans;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hwlantian.udp.beans.record.HardwareVersion;
 import com.hwlantian.udp.beans.record.Record;
 import com.hwlantian.udp.beans.tbsd.Command;
 import com.hwlantian.udp.beans.tbsd.Requests;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,30 +17,23 @@ import java.util.Map;
  */
 @Data
 public class Upload {
-
     private String ip;
+    @JsonProperty("devId")
     private String deviceId;
-    private HardwareVersion version;
-
-    private Map<String, Double> data;
-    private Requests requests;
-    private List<Command> commands;
-    private List<String> routers;
+    private Map<String, Double> data = new HashMap<>();
     private Integer line;
-
+    @JsonAnySetter
+    public void putData(String key, Object value) {
+        if (value instanceof Number) {
+            data.put(key, ((Number) value).doubleValue());
+        }
+    }
     public Record toRecord() {
         Record record = new Record();
         record.setDeviceId(deviceId);
-        record.setVersion(version);
-        if (record.getVersion().getProtocol() == null) {
-            record.getVersion().setProtocol("udp 2.0");
-        }
         record.setIp(ip);
         record.setData(data);
-        record.setRequests(requests);
         record.setLine(line);
-        record.setRouters(routers);
-        record.setCommands(commands);
         return record;
     }
 

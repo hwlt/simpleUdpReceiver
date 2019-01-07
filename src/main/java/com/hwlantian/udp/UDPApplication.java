@@ -31,7 +31,7 @@ public class UDPApplication {
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         objectMapper.configure(JsonParser.Feature.IGNORE_UNDEFINED, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         return objectMapper;
     }
@@ -52,11 +52,12 @@ public class UDPApplication {
         udpServer.start();
 
         // fake upload data, raw data is
-        // {"contents":[{"deviceId":"N2-1e4687cc490bf9ecc0e62b879feaa2b0","version":{"hardware":"N2 1.0.0 release","firmware":"N2 2.0.0 international","protocol":"udp 2.0"},"commands":[{"line":0,"data":{"imei":"383633353836303335373633323837"}}],"requests":{"time":{},"weather":{"data":{"type":127}},"forecast":{"data":{"from":-1,"to":4}},"weatherHistory":{"data":{"from":30,"to":0,"type":"pm2d5","level":"day"}}},"data":{"pm2d5":297.07,"co2":2634,"co2w":0,"pm1d0":185.26,"pm10":331.8,"pc0d3":38801,"pc1d0":2298,"pc2d5":139,"pc5":26,"pc10":12,"pal":24360,"temp":26.11,"hum":42.11,"rssi":-66,"battery":100}}]}
-        TimerTask task = new TimerTask() {
+        // {"devId":"N2-ACE7D39FCA57DF11685B51CC906808CE","ver":"N2 1.0.1.0","slope":100,"pm2d5":7.980000,"pm10":39.200000,"ch2o":223,"co2":3920,"temp":21.770000,"hum":20.710000,"ssid":"BLUE_SKY","systemTick":15502}
+        //
+         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                String message = "{\"contents\":[{\"deviceId\":\"N2-1e4687cc490bf9ecc0e62b879feaa2b0\",\"version\":{\"hardware\":\"N2 1.0.0 release\",\"firmware\":\"N2 2.0.0 international\",\"protocol\":\"udp 2.0\"},\"commands\":[{\"line\":0,\"data\":{\"imei\":\"383633353836303335373633323837\"}}],\"requests\":{\"time\":{},\"weather\":{\"data\":{\"type\":127}},\"forecast\":{\"data\":{\"from\":-1,\"to\":4}},\"weatherHistory\":{\"data\":{\"from\":30,\"to\":0,\"type\":\"pm2d5\",\"level\":\"day\"}}},\"data\":{\"pm2d5\":297.07,\"co2\":2634,\"co2w\":0,\"pm1d0\":185.26,\"pm10\":331.8,\"pc0d3\":38801,\"pc1d0\":2298,\"pc2d5\":139,\"pc5\":26,\"pc10\":12,\"pal\":24360,\"temp\":26.11,\"hum\":42.11,\"rssi\":-66,\"battery\":100}}]}";
+                String message = "{\"devId\":\"N2-ACE7D39FCA57DF11685B51CC906808CE\",\"ver\":\"N2 1.0.1.0\",\"slope\":100,\"pm2d5\":7.980000,\"pm10\":39.200000,\"ch2o\":223,\"co2\":3920,\"temp\":21.770000,\"hum\":20.710000,\"ssid\":\"BLUE_SKY\",\"systemTick\":15502}";
                 try {
                     UDPClient client = new UDPClient();
                     client.send(message);
@@ -66,7 +67,7 @@ public class UDPApplication {
                 }
             }
         };
-        new Timer().schedule(task, 5000);
+//        new Timer().schedule(task, 5000);
     }
 // manually start the server, instead of using spring IOT
 //    public void startService() throws InterruptedException {

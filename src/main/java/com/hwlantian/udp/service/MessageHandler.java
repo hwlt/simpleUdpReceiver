@@ -38,32 +38,28 @@ public class MessageHandler extends SimpleChannelInboundHandler<DatagramPacket> 
         String hostAddress = msg.sender().getAddress().getHostAddress();
         log.trace("upload message: {}, from ip: {}", uploadMessage, hostAddress);
         try {
-            UploadWarp uploadWarp = objectMapper.readValue(uploadMessage, UploadWarp.class);
-            DownloadWarp downloadWarp = new DownloadWarp();
             long now = TimeUtil.getTime();
-            for (Upload upload : uploadWarp.getContents()) {
-                Record record = upload.toRecord();
-                record.setIp(hostAddress);
-                record.setTimestamp(now);
-                // this log is just for demo.
-                log.info("device id is: {}, data is{}, ip is{}.", record.getDeviceId(), record.getData(), record.getIp());
-                // save data to db or cache, or send internal message to other service for that.
-                // and need to get Return for that record to tell device that the data has been received.
-                // if device request data from server, or send command to server. or server has some command need to send
-                // to device. add them to the Return. Beware that the server-to-device command can be sent later. so may need to
-                // cache the ip address and the port if you need that feature.
+            Upload upload = objectMapper.readValue(uploadMessage, Upload.class);
+            Record record = upload.toRecord();
+            record.setIp(hostAddress);
+            record.setTimestamp(now);
+            // this log is just for demo.
+            log.info("device id is: {}, data is{}, ip is{}.", record.getDeviceId(), record.getData(), record.getIp());
+            // save data to db or cache, or send internal message to other service for that.
+            // and need to get Return for that record to tell device that the data has been received.
+            // if device request data from server, or send command to server. or server has some command need to send
+            // to device. add them to the Return. Beware that the server-to-device command can be sent later. so may need to
+            // cache the ip address and the port if you need that feature.
 
-                // now I just use DemoDatabase for data store stuff. Beware that the upload may be very frequency if got
-                // too many devices. So better use message rather than save it right now.
-                Return aReturn = database.save(record);
-                downloadWarp.getContents().add(Download.fromReturn(aReturn));
-            }
+            // now I just use DemoDatabase for data store stuff. Beware that the upload may be very frequency if got
+            // too many devices. So better use message rather than save it right now.
+            Return aReturn = database.save(record);
             // IMPORTANT!!!  need to add a '\n' at the end of the download packet.
-            String downloadMessage = objectMapper.writeValueAsString(downloadWarp) + "\n";
+            String downloadMessage = objectMapper.writeValueAsString(Download.fromReturn(aReturn)) + "\n";
             DatagramPacket responsePacket = new DatagramPacket(Unpooled.copiedBuffer(downloadMessage, Charset.forName("UTF-8")), msg.sender());
             ctx.write(responsePacket);
             ctx.flush();
-        } catch (JsonParseException|JsonMappingException ex) {
+        } catch (JsonParseException | JsonMappingException ex) {
             log.error("parse error!");
             String downloadMessage = objectMapper.writeValueAsString(Collections.singletonMap("error", "parse error")) + "\n";
             DatagramPacket responsePacket = new DatagramPacket(Unpooled.copiedBuffer(downloadMessage, Charset.forName("UTF-8")), msg.sender());

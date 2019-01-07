@@ -5,6 +5,8 @@ import com.hwlantian.udp.beans.tbsd.Command;
 import com.hwlantian.udp.beans.tbsd.Requests;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,16 +14,15 @@ import java.util.Map;
  * Created by AirJ on 17/8/17.
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Record {
-    private String ip;
     private String deviceId;
+    private String ip;
     private Long timestamp;
-    private int duration;
-    private HardwareVersion version = new HardwareVersion();
+    private HardwareVersion version;
     private Map<String, Double> data;
     private Requests requests;
-    private List<Command> commands;
-    private Integer line;
-    private List<String> routers;
+    private List<Command> commands = new ArrayList<>();
+    private Integer line = 0;
+    private List<String> routers = new ArrayList<>();
 }
